@@ -40,18 +40,6 @@ function navUserProfile() {
   $("#edit-user-username").val(currentUser.username);
 }
 
-$userProfileForm.on("submit", handleUpdateUserProfile);
-async function handleUpdateUserProfile(e) {
-  e.preventDefault;
-  const updatedUser = {
-    name: $("#edit-user-name").val(),
-    password: $("#edit-user-password").val(),
-  };
-  currentUser = await currentUser.updateProfile(updatedUser);
-  saveUserCredentialsInLocalStorage();
-  location.reload();
-}
-
 /** Show stories the current user has created */
 $myStoriesNav.on("click", navMyStories);
 function navMyStories() {
@@ -61,34 +49,6 @@ function navMyStories() {
   generateMyStoryMarkup();
 }
 
-// handle delete and edit buttons for each story
-async function handleDeleteMyStory(story) {
-  await story.deleteStory();
-  location.reload();
-}
-
-function handleEditMyStory(story) {
-  hidePageComponents();
-  $editStoryForm.show();
-  $("#edit-story-title").val(story.title);
-  $("#edit-story-author").val(story.author);
-  $("#edit-story-url").val(story.url);
-  $("#edit-story-id").val(story.storyId);
-}
-
-$editStoryForm.on("submit", handleEditStorySubmit);
-async function handleEditStorySubmit(e) {
-  e.preventDefault();
-  const storyId = $("#edit-story-id").val();
-  const updatedStory = {
-    title: $("#edit-story-title").val(),
-    author: $("#edit-story-author").val(),
-    url: $("#edit-story-url").val(),
-  };
-  await storyList.updateStory(storyId, updatedStory);
-  location.reload();
-}
-
 // show new story submission form
 $newStoriesNav.on("click", navNewStory);
 function navNewStory() {
@@ -96,22 +56,9 @@ function navNewStory() {
   $newStoryForm.show();
 }
 
-$newStoryForm.on("submit", handleNewStorySubmit);
-async function handleNewStorySubmit(e) {
-  e.preventDefault();
-  const newStory = {
-    title: $("#new-story-title").val(),
-    author: $("#new-story-author").val(),
-    url: $("#new-story-url").val(),
-  };
-  await storyList.addStory(newStory);
-  $newStoryForm.trigger("reset");
-  location.reload();
-}
-
-// show user's favourite stories
+// show user's favorite stories
 $favoritesNav.on("click", navFavStories);
-async function navFavStories() {
+function navFavStories() {
   hidePageComponents();
   $favStoriesList.show();
   $favStoriesList.empty();

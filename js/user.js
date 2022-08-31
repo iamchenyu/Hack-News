@@ -18,7 +18,6 @@ async function login(evt) {
   const password = $("#login-password").val();
   // User.login retrieves user info from API and returns User instance which we'll make the globally-available, logged-in user.
   currentUser = await User.login(username, password);
-  console.log(currentUser);
 
   $loginForm.trigger("reset");
 
@@ -92,4 +91,23 @@ function saveUserCredentialsInLocalStorage() {
 function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
   updateNavOnLogin();
+}
+
+/******************************************************************************
+                        Update User Profile
+ ******************************************************************************/
+$userProfileForm.on("submit", handleUpdateUserProfile);
+async function handleUpdateUserProfile(e) {
+  e.preventDefault();
+  const updatedUser = {
+    name: $("#edit-user-name").val(),
+    password: $("#edit-user-password").val(),
+  };
+  if (!updatedUser.password) {
+    alert("Password can't be empty!");
+  } else {
+    currentUser = await currentUser.updateProfile(updatedUser);
+    saveUserCredentialsInLocalStorage();
+    location.reload();
+  }
 }

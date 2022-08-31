@@ -1,7 +1,6 @@
 "use strict";
 
 // So we don't have to keep re-finding things on page, find DOM elements once:
-
 const $body = $("body");
 
 const $storiesLoadingMsg = $("#stories-loading-msg");
